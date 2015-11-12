@@ -1,0 +1,27 @@
+{% block stylesheets %}    
+
+    {% stylesheets 'bundles/zenfiles/css/*' filter='cssrewrite' %}
+    <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+    {% endstylesheets %}
+{% endblock %}   
+
+
+{% block content %}
+
+    <div class="container-fluid no-padding">
+
+        <div class="col-md-9 col-lg-10">
+            {% include 'ZENFilesBundle::block-manage-photo.html.twig' %}
+            <div class="clear"></div>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+{% endblock %}
+
+{% block js %}    
+
+    {% javascripts 'bundles/zenfiles/js/*' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

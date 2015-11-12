@@ -1,0 +1,24 @@
+{
+    "name": "zen/files-bundle",
+    "type": "symfony-bundle",
+    "authors": [{
+            "name": "Charly Mainier",
+            "email": "charly.mainier@gmail.com"
+        },
+        {
+            "name": "Fabien Normand",
+            "email": "fab@unmecdubweb.com"
+        }],
+    "require": {
+        "php": ">=5.5.0",
+        "symfony/framework-bundle": ">=2.5.6",
+        "twig/twig": "*",
+        "doctrine/doctrine-bundle": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "ZEN\\FilesBundle": ""
+        }
+    },
+    "target-dir": "ZEN/FilesBundle"
+}

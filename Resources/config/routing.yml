@@ -1,0 +1,12 @@
+zen_files_gallery:
+    path: /files-manager/gallery/{id_gallery}
+    defaults: { _controller: ZENFilesBundle:Photo:manage, id_gallery: 0}
+    requirements:
+        id_gallery: "^-?[0-9]+"
+        
+        
+zen_files_delete_photo:
+    pattern:  /files-manager/gallery/delete-photo/{id}
+    defaults: { _controller: ZENFilesBundle:Photo:delete }
+    requirements:
+        id: \d*

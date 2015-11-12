@@ -1,0 +1,5 @@
+
+<li class="form-photo-thumb">
+    <div class="pic" style="background-image:url({{ asset(photo.path) }});" alt="{{ photo.name }}" ></div>
+    <button type="button" class="button remove-photo" data-url="{{ path('zen_files_delete_photo', {'id': photo.id }) }}" >x</button>
+</li>
