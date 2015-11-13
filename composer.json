@@ -10,7 +10,7 @@
             "email": "fab@unmecdubweb.com"
         }],
     "require": {
-        "php": ">=5.5.0",
+        "php": ">=5.4",
         "symfony/framework-bundle": ">=2.5.6",
         "twig/twig": "*",
         "doctrine/doctrine-bundle": "*"
