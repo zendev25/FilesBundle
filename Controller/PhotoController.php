@@ -63,7 +63,7 @@ class PhotoController extends Controller {
                 //Si le le champ hallId est rensigné
                 if ($multiForm[$formName]->get('childGalleryId')->getData()) {
                     //on récupère l'instance childGallery correspondant au childGalleryId posté
-                    $childGallery = $em->getRepository($this->container->getParameter('zen_files.model_class_parent_gallery')['model_class_parent_gallery'])->find($multiForm[$formName]->get('childGalleryId')->getData());
+                    $childGallery = $em->getRepository($this->container->getParameter('zen_files.model_class_child_gallery')['model_class_child_gallery'])->find($multiForm[$formName]->get('childGalleryId')->getData());
                     //on lie l'instance photo à childGallery
                     $photo->setChildGallery($childGallery);
                 }
