@@ -15,6 +15,14 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class Photo {
 
+    
+    protected $webdir;
+
+
+    public function __construct($webdir){
+        $this->webdir = $webdir;
+    }
+    
     /**
      * @var integer
      *
@@ -329,8 +337,8 @@ class Photo {
 
     protected function getUploadRootDir() {
 
-        // On retourne le chemin relatif vers l'image pour notre code PHP
-        return __DIR__ . '/../../../../web/' . $this->getUploadDir();
+        // On retourne le chemin absolu vers l'image pour notre code PHP
+        return  $this->webdir . '/' . $this->getUploadDir();
     }
 
 

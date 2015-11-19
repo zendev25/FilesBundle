@@ -32,7 +32,10 @@ class PhotoController extends Controller {
         
         $em = $this->getDoctrine()->getManager();
         
-        $photo = new Photo();
+        //récupère le path vers le dossier web
+        $webDir = $this->get('kernel')->getRootDir() . '/../web';
+        //on le passe en param à l'entité photo
+        $photo = new Photo($webDir);
 
         //Instancie entité photo à panret_gallery
         $photo->setParentGallery($parentGallery);
