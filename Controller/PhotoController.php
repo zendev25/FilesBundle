@@ -125,7 +125,7 @@ class PhotoController extends Controller {
         
         if($register){
             $renderReturn['page'] = $page;
-            $renderReturn['hotel'] = $parentGallery;
+            $renderReturn['parentGallery'] = $parentGallery;
             
             return $this->render('ZENFilesBundle::layout-register-manage-photo.html.twig', $renderReturn);
         }else{
