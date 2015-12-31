@@ -12,6 +12,14 @@ use ReflectionClass;
 
 class PhotoController extends Controller {
 
+    //retourne la nombre maximum de photo autorisé à l'upload
+    public function getLimitPhoto($parentGallery){
+        
+        return $this->container->getParameter('zen_files.maxPhotoUpload');
+        
+    }
+    
+    
     /**
      * 
      * @param Request $request
@@ -45,60 +53,82 @@ class PhotoController extends Controller {
         
         //création du formulaire de photo de l'établissement
         //utilisation de createnameBuilder pour assigner au formulaire et avoir plusieurs formulaires sur la page
-        $multiForm['parent-gallery'] = $this->get('form.factory')->createNamedBuilder('parent-gallery', new PhotoType(0), $photo)->getForm();
+        $multiForm['parent-gallery'] = $this->get('form.factory')
+                ->createNamedBuilder('parent-gallery', new PhotoType(0), $photo, array(
+                    'attr' => array('data-childgaleryinparentgalery' => $this->container->getParameter('zen_files.childGaleryInParentGalery'))
+                ))
+                ->getForm();
         
         //pour tout les galleries enfants, on créer un formulaire correspondant
         foreach ($childsGallery as $childGallery) {
             $multiForm['child-gallery-' . $childGallery->getId()] = $this->get('form.factory')->createNamedBuilder('child-gallery-' . $childGallery->getId(), new PhotoType($childGallery->getId()), $photo)->getForm();
         }
 
+//        var_dump(count($parentGallery->getPhotos()));
         //Si un des formulaire à été posté
         if ('POST' === $request->getMethod()) {
-            
-            //récupère le nom du formulaire posté
-            $formName = $request->request->keys()[0];
+//            var_dump($this->getLimitPhoto());
+            if(count($parentGallery->getPhotos()) < $this->getLimitPhoto($parentGallery)){
+                //récupère le nom du formulaire posté
+                $formName = $request->request->keys()[0];
 
-            $multiForm[$formName]->handleRequest($request);
-
-            //vérifie le formualire
-            if ($multiForm[$formName]->isValid()) {
-
-                //Si le le champ hallId est rensigné
-                if ($multiForm[$formName]->get('childGalleryId')->getData()) {
-                    //on récupère l'instance childGallery correspondant au childGalleryId posté
-                    $childGallery = $em->getRepository($this->container->getParameter('zen_files.model_class_child_gallery')['model_class_child_gallery'])->find($multiForm[$formName]->get('childGalleryId')->getData());
-                    //on lie l'instance photo à childGallery
-                    $photo->setChildGallery($childGallery);
-                }
-
-                //L'entité photo contient un prePersist et un postPersist qui permet de s'assurer que l'image à bien été uploader et enregistré en db
-                $em->persist($photo);
-
-                //sauvegarde en base
-                $em->flush();
+                $multiForm[$formName]->handleRequest($request);
 
 
-                //la requete était en ajax
-                //retourne un json au js, pour qu'il affiche une miniature de l'image
-                if ($request->isXmlHttpRequest()) {
 
-                    $response = new Response();
-                    $output = array('success' => true, 'element' => $this->renderView('ZENFilesBundle::block-photo-thumb.html.twig', array('photo' => $photo)));
-                    $response->headers->set('Content-Type', 'application/json');
-                    $response->setContent(json_encode($output));
-                    return $response;
-                    
+                //vérifie le formualire
+                if ($multiForm[$formName]->isValid()) {
+
+                    //Si le le champ hallId est rensigné
+                    if ($multiForm[$formName]->get('childGalleryId')->getData()) {
+                        //on récupère l'instance childGallery correspondant au childGalleryId posté
+                        $childGallery = $em->getRepository($this->container->getParameter('zen_files.model_class_child_gallery')['model_class_child_gallery'])->find($multiForm[$formName]->get('childGalleryId')->getData());
+                        //on lie l'instance photo à childGallery
+                        $photo->setChildGallery($childGallery);
+                    }
+
+                    //L'entité photo contient un prePersist et un postPersist qui permet de s'assurer que l'image à bien été uploader et enregistré en db
+                    $em->persist($photo);
+
+                    //sauvegarde en base
+                    $em->flush();
+
+
+                    //la requete était en ajax
+                    //retourne un json au js, pour qu'il affiche une miniature de l'image
+                    if ($request->isXmlHttpRequest()) {
+
+                        $response = new Response();
+                        $output = array('success' => true, 'element' => $this->renderView('ZENFilesBundle::block-photo-thumb.html.twig', array('photo' => $photo)));
+                        $response->headers->set('Content-Type', 'application/json');
+                        $response->setContent(json_encode($output));
+                        return $response;
+
+                    } else {
+
+                        $url = $this->get('router')->generate('li_bo_photos');
+                        return new RedirectResponse($url);
+                    }
+
+                    //le formulaire n' pas été validé
                 } else {
 
-                    $url = $this->get('router')->generate('li_bo_photos');
-                    return new RedirectResponse($url);
+                    //Appel les messages d'erreur du form
+                    $message = $this->get('misc')->getAllErrorMessages($multiForm[$formName]);
+
+                    //on retourne au js les erreurs
+                    if ($request->isXmlHttpRequest()) {
+                        $response = new Response();
+                        $output = array('success' => false, 'errors' => $message);
+                        $response->headers->set('Content-Type', 'application/json');
+                        $response->setContent(json_encode($output));
+
+                        return $response;
+                    }
                 }
-
-                //le formulaire n' pas été validé
-            } else {
-
+            }else{
                 //Appel les messages d'erreur du form
-                $message = $this->get('misc')->getAllErrorMessages($multiForm[$formName]);
+                $message = array($this->get('translator')->trans('maxPhotoUpload'));
 
                 //on retourne au js les erreurs
                 if ($request->isXmlHttpRequest()) {
@@ -122,6 +152,8 @@ class PhotoController extends Controller {
         for ($i = 0; $i < count($childsGallery); $i++) {
             $renderReturn['childsGallery']['child-gallery-' . $childsGallery[$i]->getId()] = $childsGallery[$i];
         }
+        
+        $renderReturn['childGaleryInParentGalery'] = $this->container->getParameter('zen_files.childGaleryInParentGalery');
         
         if($register){
             $renderReturn['page'] = $page;
