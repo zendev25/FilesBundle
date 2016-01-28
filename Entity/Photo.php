@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 /**
  * Photo
  *
- * @ORM\Table(options={"engine"="MyISAM"})
  * @ORM\Entity(repositoryClass="ZEN\FilesBundle\Entity\PhotoRepository")
  * @ORM\HasLifecycleCallbacks
  */
