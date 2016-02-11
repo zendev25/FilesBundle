@@ -14,14 +14,12 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class Photo {
 
-    
     protected $webdir;
 
-
-    public function __construct($webdir){
+    public function __construct($webdir) {
         $this->webdir = $webdir;
     }
-    
+
     /**
      * @var integer
      *
@@ -65,13 +63,12 @@ class Photo {
      */
     private $deleted = 0;
 
-    
     /**
      * @ORM\ManyToOne(targetEntity="ZEN\FilesBundle\Model\ParentGalleryInterface", inversedBy="photos")
      * @var ParentGalleryInterface
      */
     protected $parentGallery;
-    
+
     /**
      * @ORM\ManyToOne(targetEntity="ZEN\FilesBundle\Model\ChildGalleryInterface", inversedBy="photos")
      * @var ChildGalleryInterface
@@ -81,13 +78,13 @@ class Photo {
     /**
      * @Assert\Image(
      *     minWidth = 1200,
-     *     minWidthMessage = "Votre image doit être supérieur à 1200px de large",
+     *     minWidthMessage = "minWidth1200",
      *     maxWidth = 2000,
-     *     maxWidthMessage = "Votre image doit être inférieur à 2000px de large",
+     *     maxWidthMessage = "maxWidth2000",
      *     minHeight = 700,
-     *     minHeightMessage = "Votre image doit être supérieur à 700px de haut",
+     *     minHeightMessage = "minHeight700",
      *     maxHeight = 1400,
-     *     maxHeightMessage = "Votre image doit être inférieur à 1400px de haut"
+     *     maxHeightMessage = "maxHeight1400"
      * )
      */
     private $file;
@@ -145,7 +142,6 @@ class Photo {
         return $this->status;
     }
 
-    
     public function getFile() {
         return $this->file;
     }
@@ -241,10 +237,8 @@ class Photo {
         if (null === $this->file) {
             return;
         }
-        
+
         //vérifie le type de fichier 
-        
-        
 //        var_dump($this->file->getMimeType());
 //
 //        die();
@@ -279,16 +273,16 @@ class Photo {
             }
         }
 
-        
+
         // On déplace le fichier envoyé dans le répertoire de notre choix
         $this->file->move(
-            $this->getUploadRootDir(), // Le répertoire de destination
-            $this->name   // Le nom du fichier à créer
+                $this->getUploadRootDir(), // Le répertoire de destination
+                $this->name   // Le nom du fichier à créer
         );
         chmod($this->getBaseDir(), 0755);
         chmod($this->getUploadRootDir(), 0755);
-        chmod($this->getUploadRootDir().'/'.$this->name, 0644);
-        
+        chmod($this->getUploadRootDir() . '/' . $this->name, 0644);
+
 //        chmod($this->getUploadRootDir().'/'.$this->name, 0644);
     }
 
@@ -314,22 +308,19 @@ class Photo {
 
     public function getUploadDir() {
 
-        $dir = $this->getBaseDir(). '/default';
-        if (!is_dir($dir))
-        {
-            mkdir($dir,755);
+        $dir = $this->getBaseDir() . '/default';
+        if (!is_dir($dir)) {
+            mkdir($dir, 755);
         }
         // On retourne le chemin relatif vers l'image pour un navigateur
         return $dir;
     }
-    
-    private function getBaseDir()
-    {
+
+    private function getBaseDir() {
         $parentGallery = $this->getParentGallery();
         $dir = 'uploads/hotel/' . $parentGallery->getSlug();
-        if (!is_dir($dir))
-        {
-            mkdir($dir,755);
+        if (!is_dir($dir)) {
+            mkdir($dir, 755);
         }
         return $dir;
     }
@@ -337,9 +328,8 @@ class Photo {
     protected function getUploadRootDir() {
 
         // On retourne le chemin absolu vers l'image pour notre code PHP
-        return  $this->webdir . '/' . $this->getUploadDir();
+        return $this->webdir . '/' . $this->getUploadDir();
     }
-
 
     /**
      * Set deleted
@@ -347,8 +337,7 @@ class Photo {
      * @param integer $deleted
      * @return Photo
      */
-    public function setDeleted($deleted)
-    {
+    public function setDeleted($deleted) {
         $this->deleted = $deleted;
 
         return $this;
@@ -359,13 +348,9 @@ class Photo {
      *
      * @return integer 
      */
-    public function getDeleted()
-    {
+    public function getDeleted() {
         return $this->deleted;
     }
-
-   
-
 
     /**
      * Set parentGallery
@@ -373,8 +358,7 @@ class Photo {
      * @param \ZEN\FilesBundle\Model\ParentGalleryInterface $parentGallery
      * @return Photo
      */
-    public function setParentGallery(\ZEN\FilesBundle\Model\ParentGalleryInterface $parentGallery = null)
-    {
+    public function setParentGallery(\ZEN\FilesBundle\Model\ParentGalleryInterface $parentGallery = null) {
         $this->parentGallery = $parentGallery;
 
         return $this;
@@ -385,8 +369,7 @@ class Photo {
      *
      * @return \ZEN\FilesBundle\Model\ParentGalleryInterface 
      */
-    public function getParentGallery()
-    {
+    public function getParentGallery() {
         return $this->parentGallery;
     }
 
@@ -396,8 +379,7 @@ class Photo {
      * @param \ZEN\FilesBundle\Model\ChildGalleryInterface $childGallery
      * @return Photo
      */
-    public function setChildGallery(\ZEN\FilesBundle\Model\ChildGalleryInterface $childGallery = null)
-    {
+    public function setChildGallery(\ZEN\FilesBundle\Model\ChildGalleryInterface $childGallery = null) {
         $this->childGallery = $childGallery;
 
         return $this;
@@ -408,8 +390,8 @@ class Photo {
      *
      * @return \ZEN\FilesBundle\Model\ChildGalleryInterface 
      */
-    public function getChildGallery()
-    {
+    public function getChildGallery() {
         return $this->childGallery;
     }
+
 }
