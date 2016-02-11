@@ -67,7 +67,7 @@ class PhotoController extends Controller {
 //        var_dump(count($parentGallery->getPhotos()));
         //Si un des formulaire à été posté
         if ('POST' === $request->getMethod()) {
-//            var_dump($this->getLimitPhoto());
+
             if(count($parentGallery->getPhotos()) < $this->getLimitPhoto($parentGallery)){
                 //récupère le nom du formulaire posté
                 $formName = $request->request->keys()[0];
@@ -158,6 +158,7 @@ class PhotoController extends Controller {
         if($register){
             $renderReturn['page'] = $page;
             $renderReturn['parentGallery'] = $parentGallery;
+            $renderReturn['maxPhotoUpload'] = $this->getLimitPhoto($parentGallery);
             
             return $this->render('ZENFilesBundle::layout-register-manage-photo.html.twig', $renderReturn);
         }else{
