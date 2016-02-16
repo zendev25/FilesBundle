@@ -154,11 +154,11 @@ class PhotoController extends Controller {
         }
         
         $renderReturn['childGaleryInParentGalery'] = $this->container->getParameter('zen_files.childGaleryInParentGalery');
-        
+        $renderReturn['parentGallery'] = $parentGallery;
+        $renderReturn['maxPhotoUpload'] = $this->getLimitPhoto($parentGallery);
+            
         if($register){
             $renderReturn['page'] = $page;
-            $renderReturn['parentGallery'] = $parentGallery;
-            $renderReturn['maxPhotoUpload'] = $this->getLimitPhoto($parentGallery);
             
             return $this->render('ZENFilesBundle::layout-register-manage-photo.html.twig', $renderReturn);
         }else{
