@@ -128,7 +128,7 @@ class PhotoController extends Controller {
                 }
             }else{
                 //Appel les messages d'erreur du form
-                $message = array($this->get('translator')->trans('maxPhotoUpload'));
+                $message = array($this->get('translator')->trans('maxPhotoUpload', array(), 'notice'));
 
                 //on retourne au js les erreurs
                 if ($request->isXmlHttpRequest()) {
