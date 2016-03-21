@@ -19,6 +19,14 @@ class PhotoController extends Controller {
         
     }
     
+    //Estce que les galleries enfants sont activés ou non
+    //retourne boolean 
+    public function isChildGalleryAllow(){
+        
+        return $this->container->getParameter('zen_files.allowChildGallery');
+        
+    }
+    
     
     /**
      * 
@@ -49,7 +57,11 @@ class PhotoController extends Controller {
         $photo->setParentGallery($parentGallery);
 
         //Récupère les galleries enfants
-        $childsGallery = $this->getChildsGallery($parentGallery->getId());
+        if($this->container->getParameter('zen_files.allowChildGallery')){
+            $childsGallery = $this->getChildsGallery($parentGallery->getId());
+        }else{
+            $childsGallery = false;
+        }
         
         //création du formulaire de photo de l'établissement
         //utilisation de createnameBuilder pour assigner au formulaire et avoir plusieurs formulaires sur la page
@@ -60,8 +72,10 @@ class PhotoController extends Controller {
                 ->getForm();
         
         //pour tout les galleries enfants, on créer un formulaire correspondant
-        foreach ($childsGallery as $childGallery) {
-            $multiForm['child-gallery-' . $childGallery->getId()] = $this->get('form.factory')->createNamedBuilder('child-gallery-' . $childGallery->getId(), new PhotoType($childGallery->getId()), $photo)->getForm();
+        if($childsGallery){
+            foreach ($childsGallery as $childGallery) {
+                $multiForm['child-gallery-' . $childGallery->getId()] = $this->get('form.factory')->createNamedBuilder('child-gallery-' . $childGallery->getId(), new PhotoType($childGallery->getId()), $photo)->getForm();
+            }
         }
 
 //        var_dump(count($parentGallery->getPhotos()));
@@ -149,8 +163,10 @@ class PhotoController extends Controller {
 
 
         $renderReturn['parentGallery'] = $parentGallery;
-        for ($i = 0; $i < count($childsGallery); $i++) {
-            $renderReturn['childsGallery']['child-gallery-' . $childsGallery[$i]->getId()] = $childsGallery[$i];
+        if($childsGallery){
+            for ($i = 0; $i < count($childsGallery); $i++) {
+                $renderReturn['childsGallery']['child-gallery-' . $childsGallery[$i]->getId()] = $childsGallery[$i];
+            }
         }
         
         $renderReturn['childGaleryInParentGalery'] = $this->container->getParameter('zen_files.childGaleryInParentGalery');

@@ -28,6 +28,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('model_class_child_gallery')->defaultValue('')->end()
                 ->scalarNode('maxPhotoUpload')->defaultValue('')->end()
                 ->scalarNode('childGaleryInParentGalery')->defaultValue('true')->end()
+                ->scalarNode('allowChildGallery')->defaultValue('false')->end()
             ->end();
         
         

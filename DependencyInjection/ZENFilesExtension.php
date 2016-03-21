@@ -29,6 +29,7 @@ class ZENFilesExtension extends Extension
         $container->setParameter('zen_files.model_class_child_gallery', $config);
         $container->setParameter('zen_files.maxPhotoUpload', $config['maxPhotoUpload']);
         $container->setParameter('zen_files.childGaleryInParentGalery', $config['childGaleryInParentGalery']);
+        $container->setParameter('zen_files.allowChildGallery', $config['allowChildGallery']);
        
           
         
