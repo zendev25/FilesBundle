@@ -21,7 +21,7 @@ class PhotoController extends Controller {
     
     //Estce que les galleries enfants sont activés ou non
     //retourne boolean 
-    public function isChildGalleryAllow(){
+    public function isChildGalleryAllow($parentGallery){
         
         return $this->container->getParameter('zen_files.allowChildGallery');
         
@@ -57,7 +57,7 @@ class PhotoController extends Controller {
         $photo->setParentGallery($parentGallery);
 
         //Récupère les galleries enfants
-        if($this->container->getParameter('zen_files.allowChildGallery')){
+        if($this->isChildGalleryAllow($parentGallery)){
             $childsGallery = $this->getChildsGallery($parentGallery->getId());
         }else{
             $childsGallery = false;
