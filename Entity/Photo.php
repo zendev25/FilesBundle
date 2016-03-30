@@ -77,7 +77,7 @@ class Photo {
 
     /**
      * @Assert\Image(
-     *     minWidth = 400
+     *     minWidth = 400,
      *     minWidthMessage = "minWidth400",
      *     maxWidth = 2500,
      *     maxWidthMessage = "maxWidth2500",
