@@ -77,14 +77,14 @@ class Photo {
 
     /**
      * @Assert\Image(
-     *     minWidth = 1200,
-     *     minWidthMessage = "minWidth1200",
-     *     maxWidth = 2000,
-     *     maxWidthMessage = "maxWidth2000",
-     *     minHeight = 700,
-     *     minHeightMessage = "minHeight700",
-     *     maxHeight = 1400,
-     *     maxHeightMessage = "maxHeight1400"
+     *     minWidth = 400
+     *     minWidthMessage = "minWidth400",
+     *     maxWidth = 2500,
+     *     maxWidthMessage = "maxWidth2500",
+     *     minHeight = 400,
+     *     minHeightMessage = "minHeight400",
+     *     maxHeight = 2000,
+     *     maxHeightMessage = "maxHeight2000"
      * )
      */
     private $file;
