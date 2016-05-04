@@ -17,7 +17,7 @@
 .drop-zone.hover{background-color: #e52444;}
 
 
-.drop-zone {background: #575756; padding: 10px; height: 160px; width: 200px;}
+.drop-zone {background: #575756; padding: 10px; height: 160px; width: 100%;}
 .drop-zone .wrap{text-align: center; border: 1px dashed #fff; padding: 10px 0 0; height: 140px;}
 .drop-zone .wrap img{margin: 10px 0 10px;}
 .drop-zone .wrap p{color: #fff; margin: 10px 0 10px; font-size: 13px;}
