@@ -1,83 +1,84 @@
 {# empty Twig template #}
 {# Parcours les foirmulaires #}
-    {% for galleryId,form in forms %}
-        
-        
-        {# galleryId à 0, on affiche le formulaire des photos de l'établissement   #}
-        {% if galleryId == 'parent-gallery' %}
-            
-            {{ form_start(form, {'attr': {'class': 'form-manage-photos'}}) }}
-                {{ form_errors(form) }}
-                 <div class="form-photo">
-                    {{ form_widget(form.file) }}
-                    <div class="form-photo-head form-block">
-                        <h3>Photo de l'établissement</h3>
-                        <h4>Photo restantes <span class="nb-photo"><span class="total-photo">0</span>/15</span></h4>
-                        <a class="button photo-upload">Browse</a>
+{% for galleryId,form in forms %}
+
+
+    {# galleryId à 0, on affiche le formulaire des photos de l'établissement   #}
+    {% if galleryId == 'parent-gallery' %}
+
+        {{ form_start(form, {'attr': {'class': 'form-manage-photos'}}) }}
+        {{ form_errors(form) }}
+        <div class="form-photo">
+            {{ form_widget(form.file) }}
+            <div class="form-photo-head form-block">
+                <h3>Photo de l'établissement</h3>
+                <h4>Photo restantes <span class="nb-photo"><span class="total-photo">0</span>/{{maxPhotoUpload}}</span></h4>
+                <a class="button photo-upload">Browse</a>
+            </div>
+            <ul class="droppable form-photo-list row">
+                {#                        {{ dump(parentGallery.photos) }}#}
+                {% for photo in parentGallery.photos %}
+                    {% include "ZENFilesBundle::block-photo-thumb.html.twig" with {'photo' : photo} %}
+                {% endfor %}
+
+
+                <li class="col-xs-3">
+                    <div class="drop-zone form-photo-thumb photo-upload">
+                        <div class="wrap">
+                            <img src="{{ asset('files/image/camera-white.png') }}" alt="" />
+                            <p>{{ 'dropZoneText'|trans }}</p>
+                            <span>{{ 'resolution'|trans }}</span>
+                        </div>
                     </div>
-                    <ul class="droppable form-photo-list">
-{#                        {{ dump(parentGallery.photos) }}#}
-                        {% for photo in parentGallery.photos %}
-                            {% include "ZENFilesBundle::block-photo-thumb.html.twig" with {'photo' : photo} %}
-                        {% endfor %}
-                        
-                        
-                        <li class="drop-zone form-photo-thumb photo-upload">
-                            <div class="wrap">
-                                <img src="{{ asset('files/image/camera-white.png') }}" alt="" />
-                                <p>{{ 'dropZoneText'|trans }}</p>
-                                <span>{{ 'resolution'|trans }}</span>
-                            </div>
-                        </li>
+                </li>
+            </ul>
+        </div>
+        {{ form_rest(form) }} 
 
-                    </ul>
+        {{ form_end(form) }}
+        <div class="clear"></div>
 
-
-                </div>
-                {{ form_rest(form) }} 
-    
-                {{ form_end(form) }}
-                <div class="clear"></div>
-                
         {# galleryId !=0 on affiche les formulaires des chambres #}
-        {% else %}
-            
-            
-            {{ form_start(form, {'attr': {'class': 'form-manage-photos'}}) }}
-                {{ form_errors(form) }}
-                <div class="form-photo">
-                    {{ form_widget(form.file) }}
-                    <div class="form-photo-head  form-block">
-                        <h3>{{ childsGallery[galleryId] }}</h3>
-                        <h4>Photo restantes <span class="nb-photo"><span class="total-photo">{{ childsGallery[galleryId].photos|length }}</span>/15</span></h4>
-                        <a class="button photo-upload">Browse</a>
+    {% else %}
+
+
+        {{ form_start(form, {'attr': {'class': 'form-manage-photos'}}) }}
+        {{ form_errors(form) }}
+        <div class="form-photo">
+            {{ form_widget(form.file) }}
+            <div class="form-photo-head  form-block">
+                <h3>{{ childsGallery[galleryId] }}</h3>
+                <h4>Photo restantes <span class="nb-photo"><span class="total-photo">{{ childsGallery[galleryId].photos|length }}</span>/15</span></h4>
+                <a class="button photo-upload">Browse</a>
+            </div>
+
+            <ul class="droppable form-photo-list">
+
+                {% for photo in childsGallery[galleryId].photos %}
+                    {% include "ZENFilesBundle::block-photo-thumb.html.twig" with {'photo' : photo} %}
+                {% endfor %}
+
+                <li class="col-xs-3">
+                    <div class="drop-zone form-photo-thumb photo-upload">
+                        <div class="wrap">
+                            <img src="{{ asset('files/image/camera-white.png') }}" alt="" />
+                            <p>{{ 'dropZoneText'|trans }}</p>
+                            <span>{{ 'resolution'|trans }}</span>
+                        </div>
                     </div>
-                    
-                    <ul class="droppable form-photo-list">
+                </li>
 
-                        {% for photo in childsGallery[galleryId].photos %}
-                            {% include "ZENFilesBundle::block-photo-thumb.html.twig" with {'photo' : photo} %}
-                        {% endfor %}
-  
-                        <li class="drop-zone form-photo-thumb photo-upload">
-                            <div class="wrap">
-                                <img src="{{ asset('files/image/camera-white.png') }}" alt="" />
-                                <p>{{ 'dropZoneText'|trans }}</p>
-                                <span>{{ 'resolution'|trans }}</span>
-                            </div>
-                        </li>
-
-                    </ul>
+            </ul>
 
 
-                </div>
-                
-                {{ form_rest(form) }} 
-                {{ form_end(form) }}
-                    
-                <div class="clear"></div>
+        </div>
 
-            
-        {% endif %}
-        
-    {% endfor %}
+        {{ form_rest(form) }} 
+        {{ form_end(form) }}
+
+        <div class="clear"></div>
+
+
+    {% endif %}
+
+{% endfor %}
