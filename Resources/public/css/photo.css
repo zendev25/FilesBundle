@@ -5,7 +5,7 @@
 .form-photo-head .button {padding: 4px 15px;}
 .form-photo-head .photo-upload{float: right; cursor: pointer;}
 
-.form-photo-list{list-style: none; padding: 0; margin: 0;}
+.form-photo-list{list-style: none;}
 
 
 .form-photo-thumb{ height: 160px; width: 100%;  margin:8px 0 8px 0; border-radius: 3px; position: relative; float: left; padding: 10px; border: 1px solid #d8d8d8;}

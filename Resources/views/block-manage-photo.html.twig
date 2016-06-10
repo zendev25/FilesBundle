@@ -52,21 +52,21 @@
                 <a class="button photo-upload">Browse</a>
             </div>
 
-            <ul class="droppable form-photo-list">
+            <ul class="droppable form-photo-list row">
 
                 {% for photo in childsGallery[galleryId].photos %}
                     {% include "ZENFilesBundle::block-photo-thumb.html.twig" with {'photo' : photo} %}
                 {% endfor %}
 
-                <li class="col-xs-3">
-                    <div class="drop-zone form-photo-thumb photo-upload">
-                        <div class="wrap">
-                            <img src="{{ asset('files/image/camera-white.png') }}" alt="" />
-                            <p>{{ 'dropZoneText'|trans }}</p>
-                            <span>{{ 'resolution'|trans }}</span>
-                        </div>
+                
+                <li class="drop-zone form-photo-thumb photo-upload">
+                    <div class="wrap">
+                        <img src="{{ asset('files/image/camera-white.png') }}" alt="" />
+                        <p>{{ 'dropZoneText'|trans }}</p>
+                        <span>{{ 'resolution'|trans }}</span>
                     </div>
                 </li>
+                
 
             </ul>
 

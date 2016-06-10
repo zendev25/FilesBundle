@@ -229,9 +229,9 @@ class PhotoController extends Controller {
         //récupère le nom de l'entité parentGallery
         $class = new ReflectionClass($model_gallery);
         $shortName = $class->getShortName();
-        
-        $getCustom = 'get' . ucfirst($shortName);
-        $parentGallery = $this->container->get('security.context')->getToken()->getUser()->$getCustom();
+        $getCustom = 'get' . ucfirst($shortName).'ByUser';
+
+        $parentGallery = $this->container->get('li.corebundle.hotel')->$getCustom();
         
         return $parentGallery;
    
